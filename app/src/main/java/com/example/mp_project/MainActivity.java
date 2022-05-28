@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.view.View;
+import android.os.Handler;
 import android.widget.Button;
 //import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +29,17 @@ public class MainActivity extends AppCompatActivity {
         senddata.setOnClickListener(v -> {
             DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference();
 
-            dbReference.child("message").push().setValue("1");
-            //Toast message
-            Toast t = Toast.makeText(getApplicationContext(), "사료주기 완료", Toast.LENGTH_SHORT);
-            t.show();
-            //
+            dbReference.child("feed").setValue(true);
+            Handler mHandler = new Handler();
+
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dbReference.child("feed").setValue(false);
+                    Toast t = Toast.makeText(getApplicationContext(), "사료주기 완료", Toast.LENGTH_SHORT);
+                    t.show();
+                }
+            },3000);
         });
         //
 
